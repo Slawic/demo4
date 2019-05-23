@@ -1,0 +1,7 @@
+.terraform
+.ssh/
+ansible/.ssh/
+*.json
+terraform.tfstate.backup
+terraform.tfstate
+.terraform.tfstate.lock.info
