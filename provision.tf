@@ -17,19 +17,22 @@ resource "null_resource" remoteExecProvisionerWFolder {
     inline = [ "sudo chmod 600 /home/centos/.ssh/id_rsa" ]
   }
   provisioner "remote-exec" {
-    inline = [ "sudo rm -rf /workdir && sudo mkdir -p /workdir/ansible /workdir/sonarqube /workdir/jenkins /workdir/kubernetes" ]
+    inline = [ 
+      "sudo rm -rf /workdir && sudo mkdir -p /workdir/ansible /workdir/sonarqube /workdir/jenkins /workdir/kubernetes",
+      "sudo chmod 777 -R /workdir"
+      ]
   }
   provisioner "file" {
     source = "ansible"
-    destination = "/workdir/ansible"
+    destination = "/workdir/"
   }
   provisioner "file" {
     source = "sonarqube"
-    destination = "/workdir/sonarqube"
+    destination = "/workdir/"
   }
   provisioner "file" {
-    source = "sonarqube"
-    destination = "/workdir/kubernetes"
+    source = "dockerimport"
+    destination = "/workdir/kubernetes/"
   }
 
   provisioner "file" {
@@ -49,20 +52,20 @@ resource "null_resource" remoteExecProvisionerWFolder {
    destination = "/workdir/jenkins/job_backend.xml"
  }
   provisioner "file" {
-   content = "${data.template_file.deployment-frontend.rendered}"
-   destination = "/workdir/kubernetes/deployment-frontend.yml"
+   content = "${data.template_file.deployment_frontend.rendered}"
+   destination = "/workdir/kubernetes/deployment_frontend.yml"
  }
   provisioner "file" {
-   content = "${data.template_file.deployment-backend.rendered}"
-   destination = "/workdir/kubernetes/deployment-backend.yml"
+   content = "${data.template_file.deployment_backend.rendered}"
+   destination = "/workdir/kubernetes/deployment_backend.yml"
  }
   provisioner "file" {
-   content = "${data.template_file.service-frontend.rendered}"
-   destination = "/workdir/kubernetes/service-frontend.yml"
+   content = "${data.template_file.service_frontend.rendered}"
+   destination = "/workdir/kubernetes/service_frontend.yml"
  }
    provisioner "file" {
-   content = "${data.template_file.service-backend.rendered}"
-   destination = "/workdir/kubernetes/service-backend.yml"
+   content = "${data.template_file.service_backend.rendered}"
+   destination = "/workdir/kubernetes/service_backend.yml"
  }
 
 }

@@ -128,8 +128,8 @@ kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --dock
 kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "gcr-json-key"}]}'
 kubectl create secret generic cloudsql-instance-credentials --from-file=credentials.json=/tmp/ansible/.ssh/gcp_sql.json
 kubectl create secret generic cloudsql-db-credentials --from-literal=username=root --from-literal=password=devops095eSchool
-kubectl apply -f kubernetes/deployment-backend.yml
-kubectl apply -f kubernetes/service-backend.yml
+kubectl apply -f kubernetes/deployment_backend.yml
+kubectl apply -f kubernetes/service_backend.yml
 kubectl apply -f kubernetes/ingress-eschool.yml
 </execCommand>
                   <execTimeout>150000</execTimeout>

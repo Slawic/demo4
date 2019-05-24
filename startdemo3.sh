@@ -8,12 +8,12 @@ variable_private_key=$(grep "priv_key_path" variables.tf -A2 |grep .pem | awk '{
 #v2=$(echo $variable_cloud_serv | sed -s "s/^\(\(\"\(.*\)\"\)\|\('\(.*\)'\)\)\$/\\3\\5/g")
 #v3=$(echo $variable_private_key | sed -s "s/^\(\(\"\(.*\)\"\)\|\('\(.*\)'\)\)\$/\\3\\5/g")
 
-#sed -i -e "s+\042google_project_name\042+${variable_new_proj}+g" ./ansible/kubernetes/deployment-frontend.yml
+#sed -i -e "s+\042google_project_name\042+${variable_new_proj}+g" ./ansible/kubernetes/deployment_frontend.yml
 
-##sed -i -e "s+google_project_name+${v1}+g" ./ansible/kubernetes/deployment-frontend.yml
-##sed -i -e "s+google_project_name+${v1}+g" ./ansible/kubernetes/deployment-backend.yml
+##sed -i -e "s+google_project_name+${v1}+g" ./ansible/kubernetes/deployment_frontend.yml
+##sed -i -e "s+google_project_name+${v1}+g" ./ansible/kubernetes/deployment_backend.yml
 
-sed -i -e "s+google_project_name+${variable_new_proj}+g" ./ansible/kubernetes/deployment-frontend.yml
+sed -i -e "s+google_project_name+${variable_new_proj}+g" ./ansible/kubernetes/deployment_frontend.yml
 sed -i -e "s+google_project_name+${variable_new_proj}+g" ./templates/job_backend.tpl
 sed -i -e "s+google_project_name+${variable_new_proj}+g" ./templates/job_frontend.tpl
 

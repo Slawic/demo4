@@ -121,8 +121,8 @@ gcloud docker -- push gcr.io/google_project_name/eschool-frontend
 gcloud beta container clusters get-credentials eschool-claster --region us-central1 --project google_project_name
 kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --docker-username=_json_key --docker-password="$(cat /tmp/ansible/.ssh/gcp-viewer.json)" --docker-email=postexampl12356@gmail.com
 kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "gcr-json-key"}]}'
-kubectl apply -f kubernetes/deployment-frontend.yml
-kubectl apply -f kubernetes/service-frontend.yml
+kubectl apply -f kubernetes/deployment_frontend.yml
+kubectl apply -f kubernetes/service_frontend.yml
 kubectl apply -f kubernetes/ingress-eschool.yml
 </execCommand>
                   <execTimeout>120000</execTimeout>

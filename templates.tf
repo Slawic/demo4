@@ -33,7 +33,7 @@ data "template_file" "job_backend" {
 }
 ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
 data "template_file" "deployment_backend" {
-  template = "${file("${path.module}/modules/infrastructure/deployment-backend.yml")}"
+  template = "${file("${path.module}/modules/infrastructure/deployment_backend.yml")}"
   depends_on = ["google_sql_database_instance.instance"]
   vars {
     project = "${var.project}"
@@ -42,19 +42,19 @@ data "template_file" "deployment_backend" {
   }
 }
 data "template_file" "deployment_frontend" {
-  template = "${file("${path.module}/modules/infrastructure/deployment-frontend.yml")}"
+  template = "${file("${path.module}/modules/infrastructure/deployment_frontend.yml")}"
   vars {
     project = "${var.project}"
   }
 }
-data "template_file" "service-backend" {
-  template = "${file("${path.module}/modules/infrastructure/service-backend.yml")}"
+data "template_file" "service_backend" {
+  template = "${file("${path.module}/modules/infrastructure/service_backend.yml")}"
   vars {
     lb_backend = "${google_compute_global_address.my_global_address.address}"
   }
 }
-data "template_file" "service-frontend" {
-  template = "${file("${path.module}/modules/infrastructure/service-frontend.yml")}"
+data "template_file" "service_frontend" {
+  template = "${file("${path.module}/modules/infrastructure/service_frontend.yml")}"
   vars {
     lb_backend = "${google_compute_global_address.my_global_address.address}"
   }
