@@ -102,6 +102,7 @@ variable user_password {
   description = "The password for the default user. If not set, a random one will be generated and available in the generated_user_password output variable."
   default     = "devops095eSchool"
 }
+
 variable "claster_name" {
   description = "Claster name"
   default = "eschool-claster"
