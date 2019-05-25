@@ -63,7 +63,7 @@ resource "null_resource" remoteExecProvisionerWFolder {
    content = "${data.template_file.service_frontend.rendered}"
    destination = "/workdir/kubernetes/service_frontend.yml"
  }
-   provisioner "file" {
+  provisioner "file" {
    content = "${data.template_file.service_backend.rendered}"
    destination = "/workdir/kubernetes/service_backend.yml"
  }
@@ -72,7 +72,7 @@ resource "null_resource" remoteExecProvisionerWFolder {
 
 
 resource "null_resource" inventoryFileWeb {
-  depends_on = ["null_resource.remoteExecProvisionerWFolder"]
+   depends_on = ["null_resource.remoteExecProvisionerWFolder"]
   count = 1
   connection {
     host = "${google_compute_instance.jenkins.*.network_interface.0.access_config.0.nat_ip}"
@@ -81,9 +81,9 @@ resource "null_resource" inventoryFileWeb {
     private_key = "${file("${var.priv_key}")}"
     agent = "false"
   }
-//  provisioner "remote-exec" {
-//    inline = ["echo ${var.instance_name}\tansible_ssh_host=${element(google_compute_instance.jenkins.*.network_interface.0.network_ip, count.index)}\tansible_user=centos\tansible_ssh_private_key_file=/home/centos/.ssh/id_rsa>>/tmp/ansible/hosts.txt"]
-//  }
+  provisioner "remote-exec" {
+   inline = ["echo ${var.instance_name}\tansible_ssh_host=${element(google_compute_instance.jenkins.*.network_interface.0.network_ip, count.index)}\tansible_user=centos\tansible_ssh_private_key_file=/home/centos/.ssh/id_rsa>>/workdir/ansible/hosts.txt"]
+  }
 }
 
 resource "null_resource" "ansibleProvision" {
@@ -96,11 +96,11 @@ resource "null_resource" "ansibleProvision" {
     private_key = "${file("${var.priv_key}")}"
     agent = "false"
   }
-  // provisioner "remote-exec" {
-  //   inline = ["sudo sed -i -e 's+#host_key_checking+host_key_checking+g' /etc/ansible/ansible.cfg"]
-  // }
+  provisioner "remote-exec" {
+    inline = ["sudo sed -i -e 's+#host_key_checking+host_key_checking+g' /etc/ansible/ansible.cfg"]
+  }
 
-  // provisioner "remote-exec" {
-  //   inline = ["ansible-playbook -i /tmp/ansible/hosts.txt /tmp/ansible/main.yml"]
-  // }
+  provisioner "remote-exec" {
+    inline = ["ansible-playbook -i /workdir/ansible/hosts.txt /workdir/ansible/main.yml"]
+  }
 }
