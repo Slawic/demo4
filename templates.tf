@@ -32,12 +32,16 @@ data "template_file" "job_backend" {
     project = "${var.project}"
     activate_key = "/workdir/ansible/${var.service_key}"
     region = "${var.region}"
-    user_password = "${var.user_password}"    
+    user_name = "${var.user_name}"
+    user_password = "${var.user_password}"
+    cluster_name = "${var.cluster_name}"    
   }
 }
 ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
+## "k8s" group of four files >>                          ##
+## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ##
 data "template_file" "deployment_backend" {
-  template = "${file("${path.module}/modules/infrastructure/deployment_backend.yml")}"
+  template = "${file("${path.module}/k8s/deployment_backend.yml")}"
   depends_on = ["google_sql_database_instance.instance"]
   vars {
     project = "${var.project}"
@@ -46,20 +50,21 @@ data "template_file" "deployment_backend" {
   }
 }
 data "template_file" "deployment_frontend" {
-  template = "${file("${path.module}/modules/infrastructure/deployment_frontend.yml")}"
+  template = "${file("${path.module}/k8s/deployment_frontend.yml")}"
   vars {
     project = "${var.project}"
   }
 }
 data "template_file" "service_backend" {
-  template = "${file("${path.module}/modules/infrastructure/service_backend.yml")}"
+  template = "${file("${path.module}/k8s/service_backend.yml")}"
   vars {
     lb_backend = "${google_compute_address.address.address}"
   }
 }
 data "template_file" "service_frontend" {
-  template = "${file("${path.module}/modules/infrastructure/service_frontend.yml")}"
+  template = "${file("${path.module}/k8s/service_frontend.yml")}"
   vars {
     lb_backend = "${google_compute_address.address.address}"
   }
 }
+## <<

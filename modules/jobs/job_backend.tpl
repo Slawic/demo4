@@ -128,11 +128,11 @@ gcloud auth activate-service-account --key-file ${activate_key}
 docker tag app1  gcr.io/${project}/app1:latest
 gcloud docker -- push gcr.io/${project}/app1:latest
 gcloud config set compute/zone ${region}
-gcloud container clusters get-credentials my-gke-cluster
+gcloud container clusters get-credentials ${cluster_name}
 kubectl create secret generic cloudsql-instance-credentials --from-file=credentials.json=${activate_key}
-kubectl create secret generic cloudsql-db-credentials --from-literal=username=root --from-literal=password=${user_password}
-kubectl apply -f /workdir/kubernetes/deployment_backend.yml
-kubectl apply -f /workdir/kubernetes/service_backend.yml</execCommand>
+kubectl create secret generic cloudsql-db-credentials --from-literal=username=${user_name} --from-literal=password=${user_password}
+kubectl apply -f /home/centos/k8s/deployment_backend.yml
+kubectl apply -f /home/centos/k8s/service_backend.yml</execCommand>
                   <execTimeout>120000</execTimeout>
                   <usePty>false</usePty>
                   <useAgentForwarding>false</useAgentForwarding>

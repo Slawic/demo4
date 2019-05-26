@@ -105,5 +105,5 @@ variable user_password {
 
 variable "cluster_name" {
   description = "Cluster name"
-  default = "eschool-claster"
+  default = "my-gke-cluster"
 }

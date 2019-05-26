@@ -18,18 +18,23 @@ resource "null_resource" remoteExecProvisionerWFolder {
   }
   provisioner "remote-exec" {
     inline = [ 
-      "sudo rm -rf /workdir && sudo mkdir -p /workdir/ansible/.ssh /workdir/sonarqube /workdir/jenkins /workdir/kubernetes",
-      "sudo chmod 777 -R /workdir"
+      "sudo rm -rf /workdir && sudo mkdir -p /workdir/ansible/.ssh /workdir/sonarqube /workdir/jenkins /home/centos/k8s /home/centos/eschool",
+      "sudo chmod 777 -R /workdir",
+      "sudo chmod 777 -R /home/centos/k8s"
       ]
+  }
+  provisioner "file" {
+    source = "dockerimport"
+    destination = "/home/centos/"
   }
   provisioner "file" {
      source = "${var.priv_key}"
      destination = "/workdir/ansible/${var.priv_key}"
-     }
+  }
   provisioner "file" {
      source = "${var.service_key}"
      destination = "/workdir/ansible/${var.service_key}"
-     }
+  }
   provisioner "file" {
     source = "ansible"
     destination = "/workdir/"
@@ -37,10 +42,6 @@ resource "null_resource" remoteExecProvisionerWFolder {
   provisioner "file" {
     source = "sonarqube"
     destination = "/workdir/"
-  }
-  provisioner "file" {
-    source = "dockerimport"
-    destination = "/workdir/kubernetes/"
   }
 
   provisioner "file" {
@@ -59,25 +60,26 @@ resource "null_resource" remoteExecProvisionerWFolder {
    content = "${data.template_file.job_backend.rendered}"
    destination = "/workdir/jenkins/job_backend.xml"
  }
+ # provision a "k8s" group of four files >>
   provisioner "file" {
    content = "${data.template_file.deployment_frontend.rendered}"
-   destination = "/workdir/kubernetes/deployment_frontend.yml"
+   destination = "/home/centos/k8s/deployment_frontend.yml"
  }
   provisioner "file" {
    content = "${data.template_file.deployment_backend.rendered}"
-   destination = "/workdir/kubernetes/deployment_backend.yml"
+   destination = "/home/centos/k8s/deployment_backend.yml"
  }
   provisioner "file" {
    content = "${data.template_file.service_frontend.rendered}"
-   destination = "/workdir/kubernetes/service_frontend.yml"
+   destination = "/home/centos/k8s/service_frontend.yml"
  }
   provisioner "file" {
    content = "${data.template_file.service_backend.rendered}"
-   destination = "/workdir/kubernetes/service_backend.yml"
+   destination = "/home/centos/k8s/service_backend.yml"
  }
+ # <<
 
 }
-
 
 resource "null_resource" inventoryFileWeb {
    depends_on = ["null_resource.remoteExecProvisionerWFolder"]
