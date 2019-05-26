@@ -1,34 +1,25 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: eschool-frontend-deployment
+  name: nginx-deployment
   labels:
-    app: eschool-frontend
+    app: nginx-1
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: eschool-frontend
+      name: nginx-1
   template:
     metadata:
       labels:
-        name: eschool-frontend
+        name: nginx-1
     spec:
       containers:
-      - name: frontend-app
-        image: gcr.io/${project}/eschool-frontend:0.0.1
-        imagePullPolicy: Always
-        livenessProbe:
-          httpGet: 
-            path: /
-            port: 80  
-          initialDelaySeconds: 90
-          periodSeconds: 10
+      - name: nginx
+        image: gcr.io/${project}/nginx:latest
         readinessProbe:
           httpGet:
-            path: / 
+            path: /
             port: 80
           initialDelaySeconds: 90
           periodSeconds: 10
-      imagePullSecrets:
-        - name: gcr-json-key

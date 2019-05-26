@@ -1,7 +1,6 @@
-# Pull base image.
+# Pull base image : latest
 FROM nginx:latest
-
-COPY ./frontend/eSchool ./usr/share/nginx/html/
-COPY ./frontend/nginx.conf ./etc/nginx/nginx.conf
+COPY ./frontend/eschool/ /usr/share/nginx/html/
+CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 80
 

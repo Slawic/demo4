@@ -18,7 +18,7 @@
       <paramsToUseForLimit></paramsToUseForLimit>
     </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
   </properties>
-  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.10.0">
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.4">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
@@ -53,14 +53,13 @@ sonar.sources=.</properties>
       <task></task>
     </hudson.plugins.sonar.SonarRunnerBuilder>
     <hudson.tasks.Shell>
-      <command>cp -r /tmp/ansible/frontend $WORKSPACE/
-cp -r /tmp/ansible/kubernetes $WORKSPACE/</command>
-    </hudson.tasks.Shell>
-    <hudson.tasks.Shell>
-      <command>sed -i -e s+https://fierce-shore-32592.herokuapp.com+http://${lb_backend}+g /var/lib/jenkins/workspace/job_frontend/src/app/services/token-interceptor.service.ts
+      <command>sed -i -e s+https://fierce-shore-32592.herokuapp.com+http://${lb_backend}:8080+g /var/lib/jenkins/workspace/job_frontend/src/app/services/token-interceptor.service.ts
 yarn install
 ng build --prod
 </command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command></command>
     </hudson.tasks.Shell>
     <jenkins.plugins.publish__over__ssh.BapSshBuilderPlugin plugin="publish-over-ssh@1.20.1">
       <delegate>
@@ -68,62 +67,28 @@ ng build --prod
         <delegate plugin="publish-over@0.22">
           <publishers>
             <jenkins.plugins.publish__over__ssh.BapSshPublisher plugin="publish-over-ssh@1.20.1">
-              <configName>docker_server</configName>
+              <configName>jenkins</configName>
               <verbose>false</verbose>
               <transfers>
                 <jenkins.plugins.publish__over__ssh.BapSshTransfer>
-                  <remoteDirectory>frontend</remoteDirectory>
-                  <sourceFiles>**/frontend/*</sourceFiles>
+                  <remoteDirectory></remoteDirectory>
+                  <sourceFiles></sourceFiles>
                   <excludes></excludes>
-                  <removePrefix>/frontend</removePrefix>
+                  <removePrefix></removePrefix>
                   <remoteDirectorySDF>false</remoteDirectorySDF>
                   <flatten>false</flatten>
                   <cleanRemote>false</cleanRemote>
                   <noDefaultExcludes>false</noDefaultExcludes>
                   <makeEmptyDirs>false</makeEmptyDirs>
                   <patternSeparator>[, ]+</patternSeparator>
-                  <execCommand></execCommand>
-                  <execTimeout>120000</execTimeout>
-                  <usePty>false</usePty>
-                  <useAgentForwarding>false</useAgentForwarding>
-                </jenkins.plugins.publish__over__ssh.BapSshTransfer>
-                <jenkins.plugins.publish__over__ssh.BapSshTransfer>
-                  <remoteDirectory>kubernetes</remoteDirectory>
-                  <sourceFiles>**/kubernetes/*</sourceFiles>
-                  <excludes></excludes>
-                  <removePrefix>/kubernetes</removePrefix>
-                  <remoteDirectorySDF>false</remoteDirectorySDF>
-                  <flatten>false</flatten>
-                  <cleanRemote>false</cleanRemote>
-                  <noDefaultExcludes>false</noDefaultExcludes>
-                  <makeEmptyDirs>false</makeEmptyDirs>
-                  <patternSeparator>[, ]+</patternSeparator>
-                  <execCommand></execCommand>
-                  <execTimeout>120000</execTimeout>
-                  <usePty>false</usePty>
-                  <useAgentForwarding>false</useAgentForwarding>
-                </jenkins.plugins.publish__over__ssh.BapSshTransfer>
-                <jenkins.plugins.publish__over__ssh.BapSshTransfer>
-                  <remoteDirectory>frontend</remoteDirectory>
-                  <sourceFiles>**/dist/eSchool/**</sourceFiles>
-                  <excludes></excludes>
-                  <removePrefix>/dist</removePrefix>
-                  <remoteDirectorySDF>false</remoteDirectorySDF>
-                  <flatten>false</flatten>
-                  <cleanRemote>false</cleanRemote>
-                  <noDefaultExcludes>false</noDefaultExcludes>
-                  <makeEmptyDirs>false</makeEmptyDirs>
-                  <patternSeparator>[, ]+</patternSeparator>
-                  <execCommand>docker build -t eschool-frontend -f frontend/Dockerfile .
-docker tag eschool-frontend gcr.io/google_project_name/eschool-frontend:0.0.1
-gcloud auth activate-service-account --key-file /tmp/ansible/.ssh/service_account.json
-gcloud docker -- push gcr.io/google_project_name/eschool-frontend
-gcloud beta container clusters get-credentials eschool-claster --region us-central1 --project google_project_name
-kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --docker-username=_json_key --docker-password="$(cat /tmp/ansible/.ssh/gcp-viewer.json)" --docker-email=postexampl12356@gmail.com
-kubectl patch serviceaccount default -p '{"imagePullSecrets": [{"name": "gcr-json-key"}]}'
-kubectl apply -f kubernetes/deployment_frontend.yml
-kubectl apply -f kubernetes/service_frontend.yml
-kubectl apply -f kubernetes/ingress-eschool.yml
+                  <execCommand>gcloud auth activate-service-account --key-file ${activate_key}
+mkdir /home/centos/eschool
+cp -R /var/lib/jenkins/workspace/job_frontend/dist/eSchool/* /home/centos/eschool
+docker build -t nginx -f /workdir/kubernetes/dockerimport/frontend/Dockerfile .
+docker tag nginx gcr.io/${project}/nginx:latest
+gcloud docker -- push gcr.io/${project}/nginx
+kubectl apply -f /workdir/kubernetes/deployment_frontend.yml
+kubectl apply -f /workdir/kubernetes/service_frontend.yml
 </execCommand>
                   <execTimeout>120000</execTimeout>
                   <usePty>false</usePty>

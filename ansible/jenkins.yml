@@ -132,7 +132,7 @@
     loop_var: plugin_name
   tags: [jenkins]
 
-- name: Configure jenkins plugins
+- name: Configure jenkins plugins-1
   copy:
     src: "{{ item }}"
     dest: /var/lib/jenkins
@@ -144,7 +144,7 @@
     - /workdir/sonarqube/hudson.plugins.sonar.SonarGlobalConfiguration.xml
     - /workdir/sonarqube/hudson.plugins.sonar.SonarRunnerInstallation.xml
     
-- name: Configure jenkins plugins
+- name: Configure jenkins plugins-2
   template:
     src: /workdir/sonarqube/hudson.plugins.git.GitTool.xml.j2
     dest: /var/lib/jenkins/hudson.plugins.git.GitTool.xml
@@ -198,4 +198,10 @@
   until: result.status == 200
   retries: 25
   delay: 5
+
+- name: Build job_backend
+  shell: "java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080/ -auth admin:{{ adminpwd.stdout }} build job_backend"
+
+- name: Build job_frontend
+  shell: "java -jar /var/cache/jenkins/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080/ -auth admin:{{ adminpwd.stdout }} build job_frontend"
 ...

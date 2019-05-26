@@ -103,7 +103,7 @@ variable user_password {
   default     = "devops095eSchool"
 }
 
-variable "claster_name" {
-  description = "Claster name"
+variable "cluster_name" {
+  description = "Cluster name"
   default = "eschool-claster"
 }

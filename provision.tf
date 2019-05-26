@@ -1,6 +1,6 @@
 resource "null_resource" remoteExecProvisionerWFolder {
    depends_on = ["google_sql_database_instance.instance"]
-  count = 1
+   count = 1
   connection {
     host = "${google_compute_instance.jenkins.*.network_interface.0.access_config.0.nat_ip}"
     type = "ssh"
@@ -11,17 +11,25 @@ resource "null_resource" remoteExecProvisionerWFolder {
   provisioner "file" {
      source = "${var.priv_key}"
      destination = "/home/centos/.ssh/id_rsa"
-     }
+  }
 
   provisioner "remote-exec" {
     inline = [ "sudo chmod 600 /home/centos/.ssh/id_rsa" ]
   }
   provisioner "remote-exec" {
     inline = [ 
-      "sudo rm -rf /workdir && sudo mkdir -p /workdir/ansible /workdir/sonarqube /workdir/jenkins /workdir/kubernetes",
+      "sudo rm -rf /workdir && sudo mkdir -p /workdir/ansible/.ssh /workdir/sonarqube /workdir/jenkins /workdir/kubernetes",
       "sudo chmod 777 -R /workdir"
       ]
   }
+  provisioner "file" {
+     source = "${var.priv_key}"
+     destination = "/workdir/ansible/${var.priv_key}"
+     }
+  provisioner "file" {
+     source = "${var.service_key}"
+     destination = "/workdir/ansible/${var.service_key}"
+     }
   provisioner "file" {
     source = "ansible"
     destination = "/workdir/"

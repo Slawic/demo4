@@ -5,7 +5,6 @@
       - yum-utils
       - device-mapper-persistent-data
       - lvm2
-      - kubectl
 
 - name: Add Docker repo
   get_url:
@@ -42,14 +41,14 @@
     enabled: yes
   become: yes
 
-- name: Add user vagrant to docker group
+- name: Add user centos to docker group
   user:
     name: centos
     groups: docker
     append: yes
   become: yes
 
-- name: Add user vagrant to docker group
+- name: Add user jenkins to docker group
   user:
     name: jenkins
     groups: docker

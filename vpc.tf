@@ -9,8 +9,10 @@ resource "google_compute_subnetwork" "private_subnetwork" {
   ip_cidr_range = "${var.ip_cidr_range_private}"
   region        = "${var.region}"
   network       = "${google_compute_network.my_vpc_network.self_link}"
+  private_ip_google_access = true
 }
 
+/*
 resource "google_compute_router" "router" {
   count  = 0
   name    = "router"
@@ -22,9 +24,11 @@ resource "google_compute_router" "router" {
     asn = 64514
   }
 }
+*/
 
-resource "google_compute_global_address" "my_global_address" {
-    name   = "ip-global-address"
+resource "google_compute_address" "address" {
+  name   = "lb-ip-address"
+  region = "${var.region}"
 }
 
 resource "google_compute_firewall" "ssh_firewall" {

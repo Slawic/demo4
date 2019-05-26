@@ -1,23 +1,22 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: eschool-backend-deployment
+  name: bsm-api-deployment
   labels:
-    app: eschool-backend
+    app: bsm-api
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      name: eschool-backend
+      name: bsm-api
   template:
     metadata:
       labels:
-        name: eschool-backend
+        name: bsm-api
     spec:
       containers:
-      - name: backend-app
-        image: gcr.io/${project}/eschool-backend:0.0.1
-        imagePullPolicy: Always
+      - name: app1
+        image: gcr.io/${project}/app1:latest
         readinessProbe:
           httpGet:
             path: /
@@ -36,7 +35,7 @@ spec:
           - name: ssl-certs
             mountPath: /etc/ssl/certs
           - name: cloudsql
-            mountPath: /cloudsql          
+            mountPath: /cloudsql
       volumes:
         - name: cloudsql-instance-credentials
           secret:
@@ -46,5 +45,3 @@ spec:
         - name: ssl-certs
           hostPath:
             path: /etc/ssl/certs
-      imagePullSecrets:
-        - name: gcr-json-key
