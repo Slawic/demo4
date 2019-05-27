@@ -19,14 +19,23 @@ resource "null_resource" remoteExecProvisionerWFolder {
   provisioner "remote-exec" {
     inline = [ 
       "sudo rm -rf /workdir && sudo mkdir -p /workdir/ansible/.ssh /workdir/sonarqube /workdir/jenkins /home/centos/k8s /home/centos/eschool",
-      "sudo chmod 777 -R /workdir",
-      "sudo chmod 777 -R /home/centos/k8s"
+      "sudo chmod 777 -R /workdir /home/centos/k8s /home/centos/eschool"
       ]
   }
   provisioner "file" {
     source = "dockerimport"
     destination = "/home/centos/"
   }
+  // provisioner "file" {
+  //   source      = "dockerimport/Dockerfile"
+  //   destination = "/home/centos/Dockerfile"
+  // }
+
+  // provisioner "file" {
+  //   source      = "dockerimport/Dockerfile_frontend"
+  //   destination = "/home/centos/Dockerfile_frontend"
+  // }
+
   provisioner "file" {
      source = "${var.priv_key}"
      destination = "/workdir/ansible/${var.priv_key}"

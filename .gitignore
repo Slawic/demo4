@@ -6,3 +6,4 @@ ansible/.ssh/
 terraform.tfstate.backup
 terraform.tfstate
 .terraform.tfstate.lock.info
+.else_files/

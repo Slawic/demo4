@@ -28,7 +28,7 @@ variable "instance_name" {
     default = "jenkins"
 }
 variable "count" {
-    default = "1"
+    default = "2"
 }
 
 
