@@ -123,7 +123,7 @@ sudo cp /workdir/jenkins/application.properties /home/centos
                   <noDefaultExcludes>false</noDefaultExcludes>
                   <makeEmptyDirs>false</makeEmptyDirs>
                   <patternSeparator>[, ]+</patternSeparator>
-                  <execCommand>docker build -t app1 .
+                  <execCommand>docker build -t app1 -f  dockerimport/Dockerfile .
 gcloud auth activate-service-account --key-file ${activate_key}
 docker tag app1  gcr.io/${project}/app1:latest
 gcloud docker -- push gcr.io/${project}/app1:latest

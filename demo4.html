@@ -1,0 +1,36 @@
+<html>
+<head>
+	<title>Demo4 // group name "IF-095-DevOps"</title>
+</head>
+<body>
+<center><h1><b>Demo4 "Install the project "eSchool" in cloud platform</b></h1></center>
+
+System requirements: You must have GCP account and installed Terraform on at your PC
+</br></br>
+Hello! It is project create of the setup application eSchool  for java in a cloud infrastructure .
+In this scheme you can see  below
+<br/><br/>
+<center><img alt="scheme of this application" 
+src="cluster.jpg">
+</center>
+<br/><br/>
+<font style="color:green">
+Step by step instruction
+</br>1. Create dir for your project
+</br>2. Select the SSH-utility (for example ssh-keygen) to generate the pair of "ssh keys"
+</br>3. Create your credential.json key in GCP
+</br>4. Create your privat and public SSH keys
+</br>5. Copy your .json key to the root dir and  in the dir to the path .ssh
+</br>6. Copy you privat and public SSH key to the root dir and  in the dir to the path .ssh
+</br>7. Go to the variables.tf and change next string :
+</br>7.1. string default = "YOUNAME.json" - this is your .json key
+</br>7.2. string default = "YOUNAME_project" - this is  your project-ID
+</br>7.3. string default = "ansible/.ssh/YOUNAME.pub" - htis name you public SSH key
+</br>7.4. string default = "ansible/.ssh/YOUNAME.pem" - htis name you privat SSH key
+</br>8. You  enter command  terraform init   in the your favorite console 
+</br>9. In your CLI we enter command: terraform plan
+</br>10. In your CLI we enter command: terraform apply
+</font>
+<br/><br/>
+</body>
+</html>

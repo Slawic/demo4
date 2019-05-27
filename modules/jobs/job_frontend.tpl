@@ -83,7 +83,7 @@ ng build --prod
                   <patternSeparator>[, ]+</patternSeparator>
                   <execCommand>gcloud auth activate-service-account --key-file ${activate_key}
 cp -R /var/lib/jenkins/workspace/job_frontend/dist/eSchool/* /home/centos/eschool
-docker build -t nginx -f Dockerfile_frontend .
+docker build -t nginx -f dockerimport/Dockerfile_frontend .
 docker tag nginx gcr.io/${project}/nginx:latest
 gcloud docker -- push gcr.io/${project}/nginx
 kubectl apply -f /home/centos/k8s/deployment_frontend.yml
